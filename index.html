@@ -443,12 +443,39 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Sumário</div>
 <ul class="sectlevel1">
-<li><a href="#_prefácio">Prefácio</a></li>
-<li><a href="#_1_manipulando_pixels_em_uma_imagem">1. Manipulando Pixels em uma Imagem</a>
+<li><a href="#_1_prefácio">1. Prefácio</a></li>
+<li><a href="#_2_manipulando_pixels_em_uma_imagem">2. Manipulando pixels em uma imagem</a>
 <ul class="sectlevel2">
-<li><a href="#_1_1_negativo_da_imagem">1.1. Negativo da imagem</a></li>
-<li><a href="#_1_2_invertendo_regiões">1.2. Invertendo Regiões</a></li>
-<li><a href="#_1_3_trocando_regiões">1.3. Trocando Regiões</a></li>
+<li><a href="#_2_1_negativo_da_imagem">2.1. Negativo da imagem</a></li>
+<li><a href="#_2_2_trocar_regiões">2.2. Trocar regiões</a></li>
+</ul>
+</li>
+<li><a href="#_3_serialização_de_dados_em_ponto_flutuante_via_filestorage">3. Serialização de dados em ponto flutuante via FileStorage</a></li>
+<li><a href="#_4_decomposição_de_imagens_em_planos_de_bits">4. Decomposição de imagens em planos de bits</a>
+<ul class="sectlevel2">
+<li><a href="#_4_1_desafio_da_imagem_codificada">4.1 Desafio da imagem codificada</a></li>
+</ul>
+</li>
+<li><a href="#_5_preenchendo_regiões">5. Preenchendo regiões</a>
+<ul class="sectlevel2">
+<li><a href="#_5_1_labeling">5.1 Labeling</a></li>
+</ul>
+</li>
+<li><a href="#_6_manipulação_de_histograma">6. Manipulação de histograma</a>
+<ul class="sectlevel2">
+<li><a href="#_6_1_algoritmo_equalize_cpp">6.1 Algoritmo equalize.cpp</a></li>
+<li><a href="#_6_2_algoritmo_motiondetector">6.2 Algoritmo motiondetector</a></li>
+</ul>
+</li>
+<li><a href="#_7_filtragem_no_domínio_espacial_i">7. Filtragem no domínio espacial I</a>
+<ul class="sectlevel2">
+<li><a href="#_7_1_filtro_laplaciano_do_gaussiano">7.1 Filtro laplaciano do gaussiano</a></li>
+</ul>
+</li>
+<li><a href="#_8_filtragem_no_domínio_espacial_ii">8. Filtragem no domínio espacial II</a>
+<ul class="sectlevel2">
+<li><a href="#_8_1_tiltshift">8.1 Tiltshift</a></li>
+<li><a href="#_8_2_tiltshiftvideo_cpp">8.2 tiltshiftvideo.cpp</a></li>
 </ul>
 </li>
 </ul>
@@ -456,27 +483,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_prefácio">Prefácio</h2>
+<h2 id="_1_prefácio">1. Prefácio</h2>
 <div class="sectionbody">
 <div class="paragraph text-justify">
-<p>O objetivo deste site é exebir os exercícios práticos da disciplina "DCA0445 Processamento Digital de Imagens" da UFRN, ministrada pelo professor Agostinho Brito. Para mais informações sobre a disciplina e sobre os exercícios propostos, acesse: <a href="https://agostinhobritojr.github.io/tutorial/pdi/" class="bare">https://agostinhobritojr.github.io/tutorial/pdi/</a>.</p>
+<p>Este site apresenta a resolução dos exercícios que foram propostos na disciplina Processamento Digital de Imagens ofertada pelo Departamento de Engenharia de Computação e Automação da UFRN, ministrada pelo professor Agostinho Brito. Caso seja necessário adquirir quaisquer informações extras sobre a disciplina, elas podem ser encontradas no seguinte link: <a href="https://agostinhobritojr.github.io/tutorial/pdi/" class="bare">https://agostinhobritojr.github.io/tutorial/pdi/</a>.</p>
 </div>
 <div class="paragraph">
-<p>Os exercícios foram desenvolvidos em Python com a utilização da biblioteca OpenCV (<a href="https://opencv.org/" class="bare">https://opencv.org/</a>).</p>
+<p>Os exercícios foram desenvolvidos na linguagem Python com a utilização da biblioteca OpenCV (<a href="https://opencv.org/" class="bare">https://opencv.org/</a>).</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_1_manipulando_pixels_em_uma_imagem">1. Manipulando Pixels em uma Imagem</h2>
+<h2 id="_2_manipulando_pixels_em_uma_imagem">2. Manipulando pixels em uma imagem</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_1_1_negativo_da_imagem">1.1. Negativo da imagem</h3>
 <div class="paragraph text-justify">
-<p>Utilizando o programa <a href="#pixels">pixels.cpp</a> como referência, foi implementado um programa regions.cpp. O objetivo do programa é exibir uma determinada parte com o negativo da imagem fornecida. Para isso, deverá ser solictado ao usuário que ele submeta coordenadas de dois pontos P1 e P2 localizados dentro dos limites do tamanho da imagem, sendo essa região exibida com o negativo da imagem.</p>
+<p>Para os dois programas desta seção, a clássica imagem "lena" foi utilizada como referência para as modificações:</p>
 </div>
-<div class="listingblock">
+<div id="lena" class="imageblock jpg">
 <div class="content">
-<pre>import cv2
+<img src="lena.jpg" alt="lena" width="500" height="500">
+</div>
+<div class="title">Figure 1. Lena</div>
+</div>
+<div class="sect2">
+<h3 id="_2_1_negativo_da_imagem">2.1. Negativo da imagem</h3>
+<div class="paragraph text-justify">
+<p>Tomando como base o código fornecido "pixels.cpp" o programa <a href="#regions">regions.py</a> foi implementado. Este código tem como objetivo exibir uma determinada parte da imagem com o negativo da imagem fornecida, isto é, inverter as cores da região. Sendo assim, é solicitado ao usuário as coordenadas de dois pontos P1 e P2 localizados dentro dos limites do tamanho da imagem, sendo essa região exibida com o negativo da imagem.</p>
+</div>
+<div id="regions" class="listingblock py">
+<div class="title">Código Fonte regions.py</div>
+<div class="content">
+<pre class="highlight"><code class="language-regions" data-lang="regions">import cv2
 import numpy as np
 
 # Carregar a imagem
@@ -511,370 +548,671 @@ output_filename = "lena_negativa.jpg"
 # Salvar a imagem resultante
 cv2.imwrite(output_filename, image)
 
-print(f"Imagem salva como {output_filename}")
-
 # Exibir a imagem resultante na janela
 cv2.imshow("Negativo da Imagem", image)
 
 # Aguardar até que uma tecla seja pressionada
 cv2.waitKey(0)
-cv2.destroyAllWindows()</pre>
+cv2.destroyAllWindows()</code></pre>
 </div>
+</div>
+<div class="paragraph text-justify">
+<p>A imagem é carregada utilizando a função "cv2.imread" e redimensionada para um tamanho fixo. A partir disso, é solicitado ao usuário os valores que delimitarão o quadrante da imagem negativa p1x, p2x, p1y e p2y, e é verificado se esses valores estão na imagem. Sendo assim, é utilizado um loop aninhado for para percorrer cada pixel na região retangular definida pelos pontos P1 e P2, em que a intensidade da cor é invertida para cada pixel, resultado em uma seção negativa dentro na imagem original.</p>
 </div>
 <div id="lena_negativa" class="imageblock jpg">
 <div class="content">
 <img src="lena_negativa.jpg" alt="lena_negativa" width="300" height="300">
 </div>
-<div class="title">Figure 1. lena_negativa.jpg</div>
-</div>
-<div id="pixels" class="listingblock cpp">
-<div class="title">Código Fonte pixels.cpp</div>
-<div class="content">
-<pre class="highlight"><code class="language-pixels" data-lang="pixels">#include &lt;iostream&gt;
-#include &lt;opencv2/opencv.hpp&gt;
-
-int main(int, char**){
-  cv::Mat image;
-  cv::Vec3b val;
-
-  image= cv::imread("bolhas.png",cv::IMREAD_GRAYSCALE);
-  if(!image.data)
-    std::cout &lt;&lt; "nao abriu bolhas.png" &lt;&lt; std::endl;
-
-  cv::namedWindow("janela", cv::WINDOW_AUTOSIZE);
-
-  for(int i=200;i&lt;210;i++){
-    for(int j=10;j&lt;200;j++){
-      image.at&lt;uchar&gt;(i,j)=0;
-    }
-  }
-
-  cv::imshow("janela", image);
-  cv::waitKey();
-
-  image= cv::imread("bolhas.png",cv::IMREAD_COLOR);
-
-  val[0] = 0;   //B
-  val[1] = 0;   //G
-  val[2] = 255; //R
-
-  for(int i=200;i&lt;210;i++){
-    for(int j=10;j&lt;200;j++){
-      image.at&lt;cv::Vec3b&gt;(i,j)=val;
-    }
-  }
-
-  cv::imshow("janela", image);
-  cv::waitKey();
-
-  imwrite("cor_pixels.png", image);
-
-  return 0;
-}</code></pre>
-</div>
-</div>
-<div class="paragraph text-justify">
-<p>Inicialmente é aberta uma imagem (<a href="#bolhas">bolhas.png</a>, nesse caso) e é feita a verificação se a imagem foi aberta corretamente, para mostrar na tela. Caso não seja possível abrir a imagem corretamente, é mostrado um aviso de erro.</p>
-</div>
-<div id="pixels_incio" class="listingblock cpp">
-<div class="title">Início do Código pixels.cpp</div>
-<div class="content">
-<pre class="highlight"><code class="language-pixels_inicio" data-lang="pixels_inicio">#include &lt;iostream&gt;
-#include &lt;opencv2/opencv.hpp&gt;
-
-int main(int, char**){
-  cv::Mat image;
-  cv::Vec3b val;
-
-  image= cv::imread("bolhas.png",cv::IMREAD_GRAYSCALE);
-  if(!image.data)
-    std::cout &lt;&lt; "nao abriu bolhas.png" &lt;&lt; std::endl;
-
-  cv::namedWindow("janela", cv::WINDOW_AUTOSIZE);</code></pre>
-</div>
-</div>
-<div class="paragraph text-justify">
-<p>Após isso, é realizado um preenchimento na cor preta (<em>image.at&lt;uchar&gt;(i,j)=0</em>), inicializando da linha 200 e coluna 10, e percorrendo até a linha 210 e coluna 200, a imagem resultante é mostrado em tela. Posteriormente, a mesma imagem é lida no formato colorido (<em>IMREAD_COLOR</em>) e, no mesmo local de preenchimento da cor preta, foi feito o preenchimento na cor vermelha, como indicado a imagem de <a href="#bolhas_preenchidas">saída</a>.</p>
-</div>
-<div id="pixels_final" class="listingblock cpp">
-<div class="title">Final do Código pixels.cpp</div>
-<div class="content">
-<pre class="highlight"><code class="language-pixels_meio" data-lang="pixels_meio">for(int i=200;i&lt;210;i++){
-    for(int j=10;j&lt;200;j++){
-      image.at&lt;uchar&gt;(i,j)=0;
-    }
-  }
-
-  cv::imshow("janela", image);
-  cv::waitKey();
-
-  image= cv::imread("bolhas.png",cv::IMREAD_COLOR);
-
-  val[0] = 0;   //B
-  val[1] = 0;   //G
-  val[2] = 255; //R
-
-  for(int i=200;i&lt;210;i++){
-    for(int j=10;j&lt;200;j++){
-      image.at&lt;cv::Vec3b&gt;(i,j)=val;
-    }
-  }</code></pre>
-</div>
-</div>
-<div id="bolhas_preenchidas" class="imageblock">
-<div class="content">
-<img src="PDI/2/cor_pixels.png" alt="bolhas_preenchidas" width="250" height="250">
-</div>
-<div class="title">Figure 2. Saída do Código</div>
+<div class="title">Figure 2. Lena negativa</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_1_2_invertendo_regiões">1.2. Invertendo Regiões</h3>
+<h3 id="_2_2_trocar_regiões">2.2. Trocar regiões</h3>
 <div class="paragraph text-justify">
-<p>Utilizando o mesmo código do programa anterior como base, foi realizada a inversão de cores em uma região (especificada pelo usuário), de modo que, ao rodar uma imagem (<a href="#biel">biel.png</a>, nesse caso) e atribuir dois pontos P1 e P2 localizados na imagem, a região retangular de vértices compostas por esses pontos passe a ter o valor negativo da imagem original na região especificada. O código completo é mostrado <a href="#regioes">abaixo</a>.</p>
+<p>Tomando como base o código pixels.cpp, o programa <a href="#trocaregioes">trocaregioes.py</a> foi implementado com o objetivo de trocar os quadrantes em diagonal na imagem.</p>
 </div>
-<div id="biel" class="imageblock">
+<div id="trocaregioes" class="listingblock py">
+<div class="title">Código Fonte trocaregioes.py</div>
 <div class="content">
-<img src="PDI/2/biel.png" alt="biel" width="250" height="250">
-</div>
-<div class="title">Figure 3. Biel.png</div>
-</div>
-<div id="regioes" class="listingblock">
-<div class="title">Código Fonte regioes.cpp</div>
-<div class="content">
-<pre class="highlight"><code class="language-regioes" data-lang="regioes">#include &lt;iostream&gt;
-#include &lt;opencv2/opencv.hpp&gt;
+<pre class="highlight"><code class="language-trocaregioes" data-lang="trocaregioes">import cv2
+import sys
+import numpy as np
 
-int main(int, char**){
-  cv::Mat image;
-  cv::Vec3b val;
+image = cv2.imread('leena.jpg', cv2.IMREAD_GRAYSCALE)
+if (image is None):
+    print("Imagem não encontrada")
 
-  int P1x, P1y, P2x, P2y;
+# Obter altura e largura da imagem
+altura, largura = image.shape
 
-  image= cv::imread("biel.png",cv::IMREAD_GRAYSCALE);
-  if(!image.data)
-    std::cout &lt;&lt; "nao abriu biel.png" &lt;&lt; std::endl;
+# Obter os quadrantes da imagem original
+primeiroQuadrante = image[0:altura//2,0:largura//2]
+segundoQuadrante = image[0:altura//2,largura//2:largura]
+terceiroQuadrante = image[altura//2:altura,0:largura//2]
+quartoQuadrante = image[altura//2:altura,largura//2:largura]
 
-  std::cout &lt;&lt; "Insira um valor para a linha de P1" &lt;&lt; std::endl;
-  std::cin &gt;&gt; P1x;
+# Criar uma nova imagem com os quadrantes da imagem original trocados
+imgTrocada = np.zeros((altura, largura), np.uint8)
+imgTrocada[0:altura//2,0:largura//2] = quartoQuadrante
+imgTrocada[0:altura//2,largura//2:largura] = terceiroQuadrante
+imgTrocada[altura//2:altura,0:largura//2] = segundoQuadrante
+imgTrocada[altura//2:altura,largura//2:largura] = primeiroQuadrante
 
-  std::cout &lt;&lt; "Insira um valor para a coluna de P1" &lt;&lt; std::endl;
-  std::cin &gt;&gt; P1y;
+# Exibir imagem com quadrantes trocados
+cv2.namedWindow('Imagem com Quadrantes Trocados', cv2.WINDOW_AUTOSIZE)
+cv2.imshow('Imagem com Quadrantes Trocados', imgTrocada)
 
-  std::cout &lt;&lt; "Insira um valor para a linha de P2" &lt;&lt; std::endl;
-  std::cin &gt;&gt; P2x;
-
-  std::cout &lt;&lt; "Insira um valor para a coluna de P2" &lt;&lt; std::endl;
-  std::cin &gt;&gt; P2y;
-
-  cv::namedWindow("janela", cv::WINDOW_AUTOSIZE);
-
-  for(int i=P1x;i&lt;P2x;i++){
-    for(int j=P1y;j&lt;P2y;j++){
-      image.at&lt;uchar&gt;(i,j)=255 - image.at&lt;uchar&gt;(i,j);
-    }
-  }
-
-  cv::imshow("janela", image);
-  cv::waitKey();
-
-  imwrite("bielinversa.png", image);
-
-  return 0;
-}</code></pre>
+# Aguardar até que uma tecla seja pressionada
+cv2.waitKey(0)
+cv2.destroyAllWindows()</code></pre>
 </div>
 </div>
 <div class="paragraph text-justify">
-<p>Após a imagem ser aberta, é solicitado ao usuário o preenchimento das posições <em>x</em> e <em>y</em> dos pontos P1 e P2, respectivamente.</p>
+<p>Para inverter os quadrantes da imagem, primeiro foi necessário obter a altura e largura da imagem a partir do método .shape, para dividi-la em quatro quadrantes em seguida. Então, foi criada uma nova imagem com tons de cinza contendo os quadrantes da imagem original reorganizados em posições opostas.</p>
 </div>
-<div id="regioes_inicio" class="listingblock cpp">
-<div class="title">Início do Código regioes.cpp</div>
+<div id="lena_trocada" class="imageblock png">
 <div class="content">
-<pre class="highlight"><code class="language-regioes_inicio" data-lang="regioes_inicio">#include &lt;iostream&gt;
-#include &lt;opencv2/opencv.hpp&gt;
+<img src="lena_trocada.png" alt="lena_trocada">
+</div>
+<div class="title">Figure 3. Lena trocada</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_3_serialização_de_dados_em_ponto_flutuante_via_filestorage">3. Serialização de dados em ponto flutuante via FileStorage</h2>
+<div class="sectionbody">
 
-int main(int, char**){
-  cv::Mat image;
-  cv::Vec3b val;
+</div>
+</div>
+<div class="sect1">
+<h2 id="_4_decomposição_de_imagens_em_planos_de_bits">4. Decomposição de imagens em planos de bits</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_4_1_desafio_da_imagem_codificada">4.1 Desafio da imagem codificada</h3>
+<div class="paragraph text-justify">
+<p>Baseando-se no código fornecido "esteg-encode.cpp" o programa <a href="#decodificacao">decodificacao.py</a> foi implementado. O objetivo deste algoritmo é recuperar a imagem codificada de uma imagem resultante de esteganografia. Para isso, será utilizada a imagem codificada abaixo.</p>
+</div>
+<div id="esteganografia" class="imageblock png">
+<div class="content">
+<img src="esteganografia.png" alt="esteganografia">
+</div>
+<div class="title">Figure 4. Imagem codificada</div>
+</div>
+<div id="decodificacao" class="listingblock py">
+<div class="title">Código Fonte decodificacao.py</div>
+<div class="content">
+<pre class="highlight"><code class="language-decodificacao" data-lang="decodificacao">import cv2
 
-  int P1x, P1y, P2x, P2y;
+# Carregar a imagem
+imagemFinal = cv2.imread("esteganografia.png")
 
-  image= cv::imread("biel.png",cv::IMREAD_GRAYSCALE);
-  if(!image.data)
-    std::cout &lt;&lt; "nao abriu biel.png" &lt;&lt; std::endl;
+# Verificar se a imagem foi carregada com sucesso
+if imagemFinal is None:
+    print("Imagem não encontrada")
+else:
+    # Clonar a imagem para trabalhar com uma cópia
+    imagemEscondida = imagemFinal.copy()
 
-  std::cout &lt;&lt; "Insira um valor para a linha de P1" &lt;&lt; std::endl;
-  std::cin &gt;&gt; P1x;
+    # Exibir a imagem original
+    cv2.imshow("", imagemFinal)
+    cv2.waitKey()
+    cv2.destroyWindow("")
 
-  std::cout &lt;&lt; "Insira um valor para a coluna de P1" &lt;&lt; std::endl;
-  std::cin &gt;&gt; P1y;
+    nbits = 3  # Número de bits para deslocamento
 
-  std::cout &lt;&lt; "Insira um valor para a linha de P2" &lt;&lt; std::endl;
-  std::cin &gt;&gt; P2x;
+    # Aplicar o deslocamento nos canais de cores
+    for i in range(imagemEscondida.shape[0]):
+        for j in range(imagemEscondida.shape[1]):
+            valEscondida = imagemEscondida[i, j]
+            valEscondida[0] = valEscondida[0] &lt;&lt; (8 - nbits)
+            valEscondida[1] = valEscondida[1] &lt;&lt; (8 - nbits)
+            valEscondida[2] = valEscondida[2] &lt;&lt; (8 - nbits)
+            imagemEscondida[i, j] = valEscondida
 
-  std::cout &lt;&lt; "Insira um valor para a coluna de P2" &lt;&lt; std::endl;
-  std::cin &gt;&gt; P2y;</code></pre>
+    # Exibir a imagem com os canais deslocados
+    cv2.imshow("", imagemEscondida)
+    # Nome do arquivo de saída
+    output_filename = "esteganografia_escondida.jpg"
+
+    # Salvar a imagem resultante
+    cv2.imwrite(output_filename, imagemEscondida)
+    cv2.waitKey()
+    cv2.destroyAllWindows()</code></pre>
 </div>
 </div>
 <div class="paragraph text-justify">
-<p>Por fim, é mostrada a imagem original, e depois é realizada uma varredura dentro da região especificada pelos pontos, cada <em>pixel</em> dentro da região recebe o seu valor invertido, obtido através da subtração do valor máximo que um <em>pixel</em> pode assumir (255), menos o valor atual do <em>pixel</em> analisado. Após percorrer toda a região retangular, a imagem final é mostrada.</p>
+<p>Para obter o resultado, o código realiza uma operação cujo objetivo é deslocar os bits nos canais de cores, desvendando assim a imagem. O número de bits configurado para o deslocamento é de 3 bits.</p>
 </div>
-<div id="regioes_final" class="listingblock cpp">
-<div class="title">Final do Código regioes.cpp</div>
+<div class="paragraph text-justify">
+<p>Para que seja possível aplicar o deslocamento nos canais de cores, utilizou-se loops aninhados iterando por todos os pixels da imagem. Para cada pixel, os bits menos significativos da imagem codificada são deslocados à esquerda em (8 - nbits).</p>
+</div>
+<div class="paragraph text-justify">
+<p>Todo esse processo resultou na imagem abaixo:</p>
+</div>
+<div id="esteganografia_escondida" class="imageblock jpg">
 <div class="content">
-<pre class="highlight"><code class="language-regioes_fim" data-lang="regioes_fim">  cv::namedWindow("janela", cv::WINDOW_AUTOSIZE);
-
-  for(int i=P1x;i&lt;P2x;i++){
-    for(int j=P1y;j&lt;P2y;j++){
-      image.at&lt;uchar&gt;(i,j)=255 - image.at&lt;uchar&gt;(i,j);
-    }
-  }
-
-  cv::imshow("janela", image);
-  cv::waitKey();
-
-  imwrite("bielinversa.png", image);
-
-  return 0;
-}</code></pre>
+<img src="esteganografia_escondida.jpg" alt="esteganografia_escondida">
+</div>
+<div class="title">Figure 5. Imagem decodificada</div>
 </div>
 </div>
-<div class="paragraph">
-<p>O resultado final pode ser visto na figura <a href="#biel_inversa">abaixo</a>.</p>
 </div>
-<div id="biel_inversa" class="imageblock">
+</div>
+<div class="sect1">
+<h2 id="_5_preenchendo_regiões">5. Preenchendo regiões</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_5_1_labeling">5.1 Labeling</h3>
+<div class="paragraph text-justify">
+<p>Baseando-se no programa labeling.cpp, foi desenvolvido um programa <a href="#preencheregioes">preencheregioes.py</a> cujo objetivo é rotular os elementos caso existam mais de 255 na imagem, e realizar a contagem de regiões com OU sem buracos internos na imagem.</p>
+</div>
+<div class="paragraph text-justify">
+<p>Para isso, foi utilizado como base a imagem fornecida abaixo:</p>
+</div>
+<div id="bolhas" class="imageblock png">
 <div class="content">
-<img src="PDI/2/bielinversa.png" alt="biel_inversa" width="250" height="250">
+<img src="bolhas.png" alt="bolhas">
 </div>
-<div class="title">Figure 4. Exemplo de Biel Inversa</div>
+<div class="title">Figure 6. Bolhas</div>
+</div>
+<div id="preencheregioes" class="listingblock py">
+<div class="title">Código Fonte preencheregioes.py</div>
+<div class="content">
+<pre class="highlight"><code class="language-preencheregioes" data-lang="preencheregioes">import cv2
+import numpy as np
+
+# Carregar a imagem em escala de cinza
+original = cv2.imread("bolhas.png", cv2.IMREAD_GRAYSCALE)
+
+# Verificar se a imagem foi carregada com sucesso
+if original is None:
+    print("Deu ruim")
+else:
+    image = original.copy()
+    p = (0, 0)
+    n_com_furos = 0
+    n_sem_furos = 0
+
+    # Retirar as bolhas que estejam nas bordas
+    for i in range(image.shape[0]):
+        # Borda esquerda
+        if image[i, 0] == 255:
+            p = (0, i)
+            cv2.floodFill(image, None, p, 0)
+        # Borda direita
+        if image[i, -1] == 255:
+            p = (image.shape[1] - 1, i)
+            cv2.floodFill(image, None, p, 0)
+
+    for i in range(image.shape[1]):
+        # Borda superior
+        if image[0, i] == 255:
+            p = (i, 0)
+            cv2.floodFill(image, None, p, 0)
+        # Borda inferior
+        if image[-1, i] == 255:
+            p = (i, image.shape[0] - 1)
+            cv2.floodFill(image, None, p, 0)
+
+    # Preencher fundo com cor diferente
+    p = (0, 0)
+    cv2.floodFill(image, None, p, 1)
+
+    # Bolhas com 1 furo ou mais
+    for i in range(image.shape[0]):
+        for j in range(image.shape[1]):
+            if image[i, j] == 0 and image[i - 1, j - 1] == 255:
+                n_com_furos += 1
+
+                p = (j - 1, i - 1)
+                cv2.floodFill(image, None, p, 80)
+
+                p = (j, i)
+                cv2.floodFill(image, None, p, 128)
+
+            # Furos dentro de bolhas já contadas
+            if image[i, j] == 255 and image[i - 1, j - 1] == 128:
+                p = (j, i)
+                cv2.floodFill(image, None, p, 180)
+
+    # Bolhas sem furos
+    for i in range(image.shape[0]):
+        for j in range(image.shape[1]):
+            if image[i, j] == 255:
+                n_sem_furos += 1
+                p = (j, i)
+                cv2.floodFill(image, None, p, 254)
+
+    total = n_com_furos + n_sem_furos
+
+    print("Nº de bolhas com furos:", n_com_furos)
+    print("Nº de bolhas sem furos:", n_sem_furos)
+    print("Nº de bolhas Total:", total)
+
+    cv2.imshow("image", image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()</code></pre>
+</div>
+</div>
+<div class="paragraph text-justify">
+<p>O código apresentado utiliza o método floodFill para remover as bolhas nas bordas ao preenchê-las com o valor 0, que equivale a cor preta. Em seguida, a cor de fundo foi alterada para um tom de cinza e foi utilizado o floodFill novamente, com o objetivo de, ao detectar um objeto com cor preta em seu interior, marcar os pixels da bolha com furo com valores diferentes, auxiliando na identificação das bolhas com furos. A imagem resultado da execução é:</p>
+</div>
+<div id="bolhas_resultado" class="imageblock png">
+<div class="content">
+<img src="bolhas_resultado.png" alt="bolhas_resultado">
+</div>
+<div class="title">Figure 7. Resultado final</div>
+</div>
+<div class="paragraph text-justify">
+<p>A saída do código no terminal, que exibe a contagem das bolhas, pode ser observada abaixo:</p>
+</div>
+<div id="bolhas_saida" class="imageblock png">
+<div class="content">
+<img src="bolhas_saida.png" alt="bolhas_saida">
+</div>
+<div class="title">Figure 8. Contagem de bolhas</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_6_manipulação_de_histograma">6. Manipulação de histograma</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_6_1_algoritmo_equalize_cpp">6.1 Algoritmo equalize.cpp</h3>
+<div class="paragraph text-justify">
+<p>Utilizando o código "histogram.cpp" como base, o <a href="#equalize">equalize.py</a> foi desenvolvido. Ele busca realizar a equalização do histograma de uma imagem obtida através da câmera do computador.</p>
+</div>
+<div id="equalize" class="listingblock py">
+<div class="title">Código Fonte equalize.py</div>
+<div class="content">
+<pre class="highlight"><code class="language-equalize" data-lang="equalize">import cv2
+import numpy as np
+
+cap = cv2.VideoCapture(0)
+
+if not cap.isOpened():
+    print("Imagem não encontrada")
+else:
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    print("largura =", width)
+    print("altura =", height)
+
+    nbins = 64
+    histw = nbins
+    histh = nbins // 2
+
+    while True:
+        ret, frame = cap.read()
+
+        if not ret:
+            break
+
+        # Dividir os canais de cores
+        b, g, r = cv2.split(frame)
+
+        # Equalizar o histograma dos canais de cores
+        b_eq = cv2.equalizeHist(b)
+        g_eq = cv2.equalizeHist(g)
+        r_eq = cv2.equalizeHist(r)
+
+        # Mesclar os canais de volta para formar a imagem colorida equalizada
+        equalized_frame = cv2.merge([b_eq, g_eq, r_eq])
+
+        cv2.imshow("Resultado", equalized_frame)
+
+        if cv2.waitKey(30) == 27:
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()</code></pre>
+</div>
+</div>
+<div class="paragraph text-justify">
+<p>Para utilizar a câmera do computador e obter a imagem de entrada, foi necessário utilizar o método "VideoCapture.(0)" da biblioteca OpenCV, onde o valor "0" indica o uso da câmera padrão do sistema. Cada um dos quadros de vídeo da câmera é lido utilizando o método "read()", e é armazenado na variável "frame". A partir disso, cada quadro é dividido em seus canais de cores RGB e cada canal é equalizado individualmente utilizando a função "equalizeHist". Como cobaia de testes, utilizei o meu colega de quarto. Ao executar o código, obtém-se o seguinte resultado:</p>
+</div>
+<div id="toinho_equalizado" class="imageblock png">
+<div class="content">
+<img src="toinho_equalizado.png" alt="toinho_equalizado">
+</div>
+<div class="title">Figure 9. Imagem com histograma equalizado</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_1_3_trocando_regiões">1.3. Trocando Regiões</h3>
-<div class="paragraph text-justify">
-<p>A terceira atividade relacionada a este tópico foi para trocar as regiões de uma figura, para isso, foi utilizada a imagem do <a href="#biel.png">Biel</a> mostrada anteriormente. O código trocaregioes.cpp está listado abaixo.</p>
+<h3 id="_6_2_algoritmo_motiondetector">6.2 Algoritmo motiondetector</h3>
+
 </div>
-<div id="trocaregioes" class="listingblock">
-<div class="title">Código Fonte trocaregioes.cpp</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_7_filtragem_no_domínio_espacial_i">7. Filtragem no domínio espacial I</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_7_1_filtro_laplaciano_do_gaussiano">7.1 Filtro laplaciano do gaussiano</h3>
+<div class="paragraph text-justify">
+<p>Tendo o programa filtroespacial.cpp como referência, foi implementado o programa <a href="#laplauss">laplauss.py</a> cujo objetivo é calcular o laplaciano do gaussiano de imagens obtidas a partir da câmera do computador.</p>
+</div>
+<div id="laplauss" class="listingblock py">
+<div class="title">Código Fonte laplauss.py</div>
 <div class="content">
-<pre class="highlight"><code class="language-trocaregioes.cpp" data-lang="trocaregioes.cpp">#include &lt;iostream&gt;
-#include &lt;opencv2/opencv.hpp&gt;
+<pre class="highlight"><code class="language-laplauss" data-lang="laplauss">from typing import Match
+import numpy as np
+import sys
+import cv2
 
-int main(int, char**){
-  cv::Mat image;
-  cv::Vec3b val;
+# Criar funções para auxiliar no código
+class Filtros:
+    media = np.array([[0.1111, 0.1111, 0.1111],
+                      [0.1111, 0.1111, 0.1111],
+                      [0.1111, 0.1111, 0.1111]],dtype=np.float32)
+    gauss = np.array([[0.0625,0.125,0.0625],
+                      [0.125, 0.25,0.125],
+                      [0.0625, 0.125,  0.0625]],dtype=np.float32)
+    horizontal = np.array([[-1,0,1],
+                           [-2,0,2],
+                           [-1,0,1]],dtype=np.float32)
+    vertical = np.array([[-1,-2,-1],
+                         [0,0,0],
+                         [1,2,1]],dtype=np.float32)
+    laplace = np.array([[0,-1,0],
+                        [-1,4,-1],
+                        [0,-1,0]],dtype=np.float32)
+    boost = np.array([[0, -1, 0],
+                      [-1, 5.2, -1],
+                      [0, -1, 0]],dtype=np.float32)
 
-  image= cv::imread("biel.png",cv::IMREAD_GRAYSCALE);
-  if(!image.data)
-    std::cout &lt;&lt; "nao abriu biel.png" &lt;&lt; std::endl;
+cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    sys.exit("Não foi possível abrir a câmera.")
 
-  cv:: Size tam = image.size();
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640);
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480);
 
-  cv::imshow("janela 1", image);
-  cv::waitKey();
+absolute = True
+doLaplacian = False
+mask = Filtros.media
 
-  cv:: Mat q1 = image(cv::Rect(0, 0, tam.width/2, tam.height/2));
-  cv:: Mat q2 = image(cv::Rect(0, tam.width/2, tam.width/2, tam.height/2));
-  cv:: Mat q3 = image(cv::Rect(tam.height/2, 0, tam.width/2, tam.height/2));
-  cv:: Mat q4 = image(cv::Rect(tam.height/2, tam.width/2, tam.width/2, tam.height/2));
+print('Filtragem Media escolhida como padrão')
+print("\Press the key correspondent to the filter: \n"
+        "a - abs\n"
+        "m - mean\n"
+        "g - gauss\n"
+        "v - vertical\n"
+        "h - horizontal\n"
+        "l - laplacian\n"
+        "b - boost\n"
+        "p - gaussian laplacian\n"
+        "esc - quit\n")
 
-  cv::Mat l1, l2, imgtrocada;
-  cv::hconcat(q4, q2, l1);
-  cv::hconcat(q3, q1, l2);
-  cv::vconcat(l1, l2, imgtrocada);
+while True:
+    # Capturar frame por frame
+    ret, frame = cap.read()
+    # Verificar se o frame foi aberto
+    if not ret:
+        print("Imagem não encontrada.")
+        break
 
-  cv::imshow("janela 2", imgtrocada);
-  cv::waitKey();
+    # Trasformar a imagem recebida em escala de cinza
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    imageFloat32 = np.array(gray, dtype=np.float32)
 
-  imwrite("trocada.png", imgtrocada);
+    # Realizar a filtragem escolhida
+    imgFiltrada = cv2.filter2D(imageFloat32,-1,mask, anchor=(1,1))
 
-  return 0;
-}</code></pre>
+    if(doLaplacian):
+        mask = Filtros.laplace
+        imgLaplGaussFiltrada = cv2.filter2D(imgFiltrada,-1,mask, anchor=(1,1))
+
+        if absolute:
+            imgLaplGaussFiltrada = abs(imgLaplGaussFiltrada)
+
+        result = np.array(imgLaplGaussFiltrada, dtype=np.uint8)
+
+        res = np.hstack((gray, result))
+        cv2.imshow('Filtrando', res)
+
+        mask = Filtros.gauss
+    else:
+        if absolute:
+            imgFiltrada = abs(imgFiltrada)
+
+        result = np.array(imgFiltrada, dtype=np.uint8)
+
+        res = np.hstack((gray, result))
+        cv2.imshow('Filtrando', res)
+
+    key = cv2.waitKey(10)
+    if(key == 27):
+        break
+    elif(key == ord('a')):
+        print('abs modificado')
+        absolute = not absolutefloat LoG[] = {1,2,1,
+               2,-16,2,
+               1,2,1};
+    elif(key == ord('m')):
+        doLaplacian = False
+        print('media escolhida')
+        mask = Filtros.media
+        print(mask)
+    elif(key == ord('g')):
+        doLaplacian = False
+        print('Gauss escolhida')
+        mask = Filtros.gauss
+        print(mask)
+    elif(key == ord('l')):
+        doLaplacian = False
+        print('Laplacian escolhida')
+        mask = Filtros.laplace
+        print(mask)
+    elif(key == ord('h')):
+        doLaplacian = False
+        print('Horizontal escolhida')
+        mask = Filtros.horizontal
+        print(mask)
+    elif(key == ord('v')):
+        doLaplacian = False
+        print('Vertical escolhida')
+        mask = Filtros.vertical
+    elif(key == ord('b')):
+        doLaplacian = False
+        print('Boost escolhida')
+        mask = Filtros.boost
+        print(mask)
+    elif(key == ord('p')):
+        print('Laplacian Gauss escolhida')
+        mask = Filtros.gauss
+        print(mask, '/n', Filtros.laplace)
+        doLaplacian = True
+
+cap.release()
+cv2.destroyAllWindows()</code></pre>
 </div>
 </div>
 <div class="paragraph text-justify">
-<p>Esse código consiste em dividir a imagem em 4 quadrantes e inverter a posição deles (<em>q1</em> com <em>q4</em> e <em>q2</em> com <em>q3</em>). Inicialmente, após a imagem ser aberta, é armazenado o tamanho da imagem, que indica a quantidade de linhas e colunas presentes na figura aberta. É feita a separação dos quadrantes da imagem da seguinte maneira:</p>
+<p>Logo no começo do código, as matrizes para os diferentes tipos de filtros foram definidas. Como o objetivo é aplicar o filtro laplaciano do gaussiano, inicialmente aplicou-se o filtro gaussiano, e logo em seguida, o laplaciano. Um resultado interessante é justamente a comparação entre os dois resultados:</p>
 </div>
-<div class="ulist text-justify">
-<ul>
+<div id="toinho_laplaciano" class="imageblock png">
+<div class="content">
+<img src="toinho_laplaciano.png" alt="toinho_laplaciano">
+</div>
+<div class="title">Figure 10. Filtro laplaciano</div>
+</div>
+<div id="toinho_laplacianogaussiano" class="imageblock png">
+<div class="content">
+<img src="toinho_laplacianogaussiano.png" alt="toinho_laplacianogaussiano">
+</div>
+<div class="title">Figure 11. Filtro laplaciano do gaussiano</div>
+</div>
+<div class="paragraph text-justify">
+<p>De posse das duas imagens, a principal diferença percebida é que o filtro laplaciano apresenta uma imagem mais "suja", enquanto a imagem obtida com o filtro laplaciano do gaussiano é primeiramente suavizada e, em seguida, tem suas bordas realçadas.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_8_filtragem_no_domínio_espacial_ii">8. Filtragem no domínio espacial II</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_8_1_tiltshift">8.1 Tiltshift</h3>
+<div class="paragraph text-justify">
+<p>Com base no programa addweighted.cpp, o código <a href="#tiltshift">tiltshift.py</a> foi implementado, a fim de aplicar três diferentes ajustes na tela de interface:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p><em>q1</em>: Começa da primeira linha e primeira coluna da imagem (<em>0</em>, <em>0</em>) e se extende até a metade da figura (<em>nlinhas/2</em>, <em>ncolunas/2</em>);</p>
+<p>Um ajuste capaz de regular qual o valor da altura da região de foco;</p>
 </li>
 <li>
-<p><em>q2</em>: Começa na primeira linha e na metade das colunas da imagem (<em>0</em>, <em>ncolunas/2</em>), e vai até a metade das linhas e última coluna da imagem (<em>nlinhas/2</em>, <em>ncolunas/2</em>);</p>
+<p>Um ajuste capaz de regular qual o valor da força de decaimento da região borrada;</p>
 </li>
 <li>
-<p><em>q3</em>: Inicia na metade das linhas e primeira coluna da figura (<em>nlinhas/2</em>, <em>0</em>), e se extende até a metade da figura (<em>nlinhas/2</em>, <em>ncolunas/2</em>);</p>
+<p>Um ajuste capaz de regular a posição vertical do centro da região de foco.</p>
 </li>
-<li>
-<p><em>q4</em>: Inicia na metade das linhas e metade das colunas da figura (<em>nlinhas/2</em>, <em>ncolunas/2</em>), e se extende até a última linha e última coluna da figura (<em>nlinhas/2</em>, <em>ncolunas/2</em>).</p>
-</li>
-</ul>
+</ol>
+</div>
+<div id="tiltshift" class="listingblock py">
+<div class="title">Código Fonte tiltshift.py</div>
+<div class="content">
+<pre class="highlight"><code class="language-tiltshift" data-lang="tiltshift">import cv2
+import numpy as np
+
+# Parâmetros iniciais
+l1 = -100
+l2 = 50
+d = 6
+centro = 100
+matriz_media_tam = 7
+altura = 0
+largura = 0
+slider_altura = 0
+slider_altura_max = 100
+slider_decaimento = 0
+slider_decaimento_max = 100
+slider_deslocamento = 0
+slider_deslocamento_max = 100
+imagem = None
+imagem_borrada = None
+ponderada = None
+ponderada_negativa = None
+
+def addEffect():
+    global l1, l2, d, centro, altura, largura, imagem, imagem_borrada, ponderada, ponderada_negativa
+
+    altura, largura, _ = imagem.shape
+    centro = slider_deslocamento * altura // 100
+
+    # Calcular a ponderação para o efeito tilt-shift
+    for i in range(altura):
+        fx = 0.0
+        if d != 0:
+            fx = -0.5 * (np.tanh((i - centro + l1) / d) - np.tanh((i - centro + l2) / d))
+        else:
+            fx = -0.5 * (np.tanh((i - centro + l1) / 0.01) - np.tanh((i - centro + l2) / 0.01))
+
+        for j in range(largura):
+            ponderada[i, j] = [fx, fx, fx]
+            ponderada_negativa[i, j] = [1.0 - fx, 1.0 - fx, 1.0 - fx]
+
+    # Aplicar o efeito ponderado na imagem original e na imagem borrada
+    res1 = imagem * ponderada
+    res2 = imagem_borrada * ponderada_negativa
+
+    # Combinar as duas imagens resultantes
+    resultado = cv2.addWeighted(res1, 1, res2, 1, 0)
+    resultado = resultado.astype(np.uint8)
+
+    # Exibir o resultado
+    cv2.imshow("tiltshift", resultado)
+
+# Funções para atualizar os parâmetros via trackbars
+def on_trackbar_deslocamento(val):
+    global slider_deslocamento, centro
+    slider_deslocamento = val
+    centro = slider_deslocamento * altura // 100
+    addEffect()
+
+def on_trackbar_altura(val):
+    global slider_altura, l1, l2
+    slider_altura = val
+    alt = altura * slider_altura // 100
+    l1 = -alt // 2
+    l2 = alt // 2
+    addEffect()
+
+def on_trackbar_decaimento(val):
+    global slider_decaimento, d
+    slider_decaimento = val
+    d = slider_decaimento
+    addEffect()
+
+if __name__ == "__main__":
+    # Criar uma matriz de filtro de média para borrar a imagem
+    media = np.full((matriz_media_tam, matriz_media_tam), 1.0 / (matriz_media_tam * matriz_media_tam), dtype=np.float32)
+    masc_media = np.float32(media)
+
+    # Carregar a imagem e aplica um filtro de média
+    imagem = cv2.imread("lena.jpg").astype(np.float32)
+    imagem_borrada = cv2.filter2D(imagem, -1, masc_media)
+
+    largura = imagem.shape[1]
+    altura = imagem.shape[0]
+
+    ponderada = np.zeros((altura, largura, 3), dtype=np.float32)
+    ponderada_negativa = np.zeros((altura, largura, 3), dtype=np.float32)
+
+    # Criar uma janela para exibir o resultado
+    cv2.namedWindow("tiltshift", cv2.WINDOW_NORMAL)
+
+    # Criar trackbars para controlar os parâmetros
+    cv2.createTrackbar("Valor de Altura x {}".format(slider_altura_max), "tiltshift", slider_altura, slider_altura_max, on_trackbar_altura)
+    on_trackbar_altura(slider_altura)
+
+    cv2.createTrackbar("Valor de Decaimento x {}".format(slider_decaimento_max), "tiltshift", slider_decaimento, slider_decaimento_max, on_trackbar_decaimento)
+    on_trackbar_decaimento(slider_decaimento)
+
+    cv2.createTrackbar("Valor de Deslocamento x {}".format(slider_deslocamento_max), "tiltshift", slider_deslocamento, slider_deslocamento_max, on_trackbar_deslocamento)
+    on_trackbar_deslocamento(slider_deslocamento)
+
+    addEffect()
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()</code></pre>
+</div>
 </div>
 <div class="paragraph text-justify">
-<p><strong>Obs.: A distância sempre é dividida por 2 pelo fato do código estar indicando o tamanho que será percorrido para cortar os quadrantes, não necessariamente ao exato pixel inicial e final.</strong></p>
+<p>O objetivio do código apresentado é a aplicação do efeito "tiltshift" em uma imagem fornecida. Essa é uma técnica de processamento de imagens capaz de criar uma região borrada na figura, enquanto uma outra permanece com foco. O resultado da implementação pode ser visto através de um comparativo entre a imagem original, e a imagem com tiltshift:</p>
 </div>
-<div id="trocaregioes_inicio" class="listingblock">
-<div class="title">Início do Código trocaregioes.cpp</div>
+<div id="lena" class="imageblock jpg">
 <div class="content">
-<pre class="highlight"><code class="language-trocaregioes_inicio" data-lang="trocaregioes_inicio">#include &lt;iostream&gt;
-#include &lt;opencv2/opencv.hpp&gt;
-
-int main(int, char**){
-  cv::Mat image;
-  cv::Vec3b val;
-
-  image= cv::imread("biel.png",cv::IMREAD_GRAYSCALE);
-  if(!image.data)
-    std::cout &lt;&lt; "nao abriu biel.png" &lt;&lt; std::endl;
-
-  cv:: Size tam = image.size();
-
-  cv::imshow("janela 1", image);
-  cv::waitKey();
-
-  cv:: Mat q1 = image(cv::Rect(0, 0, tam.width/2, tam.height/2));
-  cv:: Mat q2 = image(cv::Rect(0, tam.width/2, tam.width/2, tam.height/2));
-  cv:: Mat q3 = image(cv::Rect(tam.height/2, 0, tam.width/2, tam.height/2));
-  cv:: Mat q4 = image(cv::Rect(tam.height/2, tam.width/2, tam.width/2, tam.height/2));</code></pre>
+<img src="lena.jpg" alt="lena">
 </div>
+<div class="title">Figure 12. Imagem original</div>
+</div>
+<div id="lena_olhar" class="imageblock png">
+<div class="content">
+<img src="lena_olhar.png" alt="lena_olhar">
+</div>
+<div class="title">Figure 13. Imagem com tiltshift</div>
 </div>
 <div class="paragraph text-justify">
-<p>Para trocar os valores das regiões da figura, é utilizada a função de concatenação de matrizes, onde na primeira metade (<em>l1</em>) estarão os quadrantes <em>q2</em> e <em>q4</em>, e na segunda metade (<em>l2</em>) estarão os quadrantes <em>q3</em> e <em>q1</em>.</p>
+<p>Nela é possível perceber um foco maior no olhar da Lena, enquanto o resto de seu rosto é exibido com borramento.</p>
 </div>
-<div id="trocaregioes_final" class="listingblock">
-<div class="title">Final do Código trocaregioes.cpp</div>
-<div class="content">
-<pre class="highlight"><code class="language-trocaregioes_final_" data-lang="trocaregioes_final_">cv::Mat l1, l2, imgtrocada;
-  cv::hconcat(q4, q2, l1);
-  cv::hconcat(q3, q1, l2);
-  cv::vconcat(l1, l2, imgtrocada);
+</div>
+<div class="sect2">
+<h3 id="_8_2_tiltshiftvideo_cpp">8.2 tiltshiftvideo.cpp</h3>
 
-  cv::imshow("janela 2", imgtrocada);
-  cv::waitKey();
-
-  imwrite("trocada.png", imgtrocada);
-
-  return 0;
-}</code></pre>
-</div>
-</div>
-<div class="paragraph text-justify">
-<p>A imagem resultante do processo utilizando a imagem <a href="#biel">original</a> é vista na figura <a href="#biel_trocada">abaixo</a>.</p>
-</div>
-<div id="biel_trocada" class="imageblock">
-<div class="content">
-<img src="PDI/2/trocada.png" alt="biel_trocada" width="250" height="250">
-</div>
-<div class="title">Figure 5. Biel Trocada</div>
-</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-02 07:25:12 -0300
+Last updated 2023-10-09 23:19:34 -0300
 </div>
 </div>
 </body>
